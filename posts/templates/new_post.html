@@ -24,6 +24,7 @@
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{form}}
+            {{form.pictures}}
           <div class="logo">
             <h1>Create Post</h1>
           </div>
