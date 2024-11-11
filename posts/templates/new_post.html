@@ -1,0 +1,55 @@
+
+
+{% extends 'base.html' %}
+{%  block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script>
+  <link rel="stylesheet" href="{% static 'assets2/style.css' %}">
+  <title>Instagram Login Form</title>
+</head>
+
+<body>
+
+  <div id="wrapper">
+    <div class="container">
+      <div class="phone-app-demo"></div>
+      <div class="form-data">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form}}
+          <div class="logo">
+            <h1>Create Post</h1>
+          </div>
+          
+          <button class="form-btn" type="submit">Create Post</button>
+          <!-- <a href="index.html" class="form-btn" type="submit">Log in</a> -->
+        
+        </form>
+      
+      </div>
+    </div>
+
+   
+
+  </div>
+
+</body>
+
+</html>
+
+
+
+{% endblock content %}
+
+<!-- <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form}}
+    <button type="submit">Create Post</button>
+</form> -->
