@@ -251,7 +251,7 @@
 
                             <div class="post__content">
                                 <div class="post__medias">
-                                    <img class="post__media" src={{post.pictures.url}} alt="Post Content" style="object-fit: cover;">
+                                 <a href="{% url 'PostDetail' post.id %}">   <img class="post__media" src={{post.pictures.url}} alt="Post Content" style="object-fit: cover;"></a>
                                 </div>
                             </div>
 

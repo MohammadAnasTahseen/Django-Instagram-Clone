@@ -20,9 +20,14 @@ img {
 a {
   text-decoration: none;
 }
-
 body {
-  background-color: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: radial-gradient(circle, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  font-family: Arial, sans-serif;
+  margin: 0;
 }
 
 #wrapper {
@@ -74,23 +79,31 @@ body {
   margin-bottom: 2.5rem;
 }
 
-.form-data form input {
+/* .form-data form input {
   padding: .8rem;
   margin-bottom: .5rem;
   border: 2px solid #eee;
   border-radius: .4rem;
-}
+} */
 
 .form-btn {
-  margin: 1rem 0 1.5rem;
-  height: 3rem;
-  background-color: #3897f0;
-  font-size: 1.4rem;
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
   font-weight: bold;
-  color: #fff;
+  color: white; /* Text color */
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); /* Instagram gradient */
   border: none;
-  border-radius: .4rem;
+  border-radius: 10px;
   cursor: pointer;
+  box-shadow: 6px 6px 10px #cbced1, -6px -6px 10px #ffffff;
+  transition: 0.3s;
+}
+
+/* Button hover effect */
+.form-btn:hover {
+  background: linear-gradient(45deg, #bc1888, #cc2366, #dc2743, #e6683c, #f09433); /* Reverse gradient on hover */
+  box-shadow: inset 6px 6px 10px #cbced1, inset -6px -6px 10px #ffffff;
 }
 
 .has-separator {
@@ -261,4 +274,46 @@ footer .container {
   footer {
     padding-bottom: 2rem;
   }
+}
+
+
+/* .form-container {
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  background-color: #ecf0f3;
+  border-radius: 20px;
+  box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #ffffff;
+} */
+
+.form-container {
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  background: linear-gradient(135deg, #fdf497, #f09433, #bc1888, #4c68d7);
+  border-radius: 20px;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.7);
+  color: #ffffff;
+  text-align: center;
+}
+
+.form-container h1 {
+  text-align: center;
+  font-weight: bolder;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Style for form fields */
+.form-field {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background-color: #ecf0f3;
+  box-shadow: inset 6px 6px 10px #525252, inset -6px -6px 10px #ffffff;
+  outline: none;
+  color: #333;
 }
