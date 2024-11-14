@@ -51,17 +51,22 @@
                                         <img src="assets1/default-user.png" alt="User Picture">
                                     </a>
 
-                                    <span>Liked by <a class="post__name--underline" href="#">user123</a> and <a href="#">73 others</a></span>
+                                    <span>{{post.like}}  <b>Likes</b></span>
                                 </div>
 
                                 <div class="post__description">
                                     <span>
                                         <a class="post__name--underline" href="https://github.com/leocosta1" target="_blank">leocosta1</a>
-                                        Responsive clone of Instagram UI. Made with ❤ for study purposes.
+                                      {{post.captions}}
                                     </span>
+
+
                                 </div>
 
-                                <span class="post__date-time">30 minutes ago</span>
+                                <span style="font-size: 12px;text-decoration: none;" class="post__datde-time">{% for tag in  post.tag.all %}<a style="text-decoration: none" href="{{tag.get_absolute_url}}">#{{tag}} </a>{% endfor %}</span>
+
+
+                                <span class="post__date-time">{{post.postedTime}}</span>
                             </div>
                         </div>
                     </article>

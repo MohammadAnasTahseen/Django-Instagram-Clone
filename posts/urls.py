@@ -6,6 +6,7 @@ urlpatterns = [
     path('',views.index,name='index' ),
     path('NewPost/',views.New_Post,name='NewPost' ),
     path('<uuid:post_id>/',views.PostDetail,name='PostDetail' ),
+    path('<uuid:post_id>/likes',views.PostLike,name='PostLikes' ),
     
     
 ]

@@ -1,5 +1,9 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from posts.models import Tag, Stream, Follow, Post
+from django.urls import reverse
+from posts.models import Likes, Tag, Stream, Follow, Post
+
+from django.http import HttpResponseRedirect
+
 from django.contrib.auth.decorators import login_required
 from posts.forms import NewPost
 # Create your views here.
@@ -66,3 +70,31 @@ def PostDetail(request,post_id):
         'post':post
     }
     return render(request,'post_detail.html',context)
+
+
+def PostLike(request,post_id):
+    user=request.user
+    post=Post.objects.get(id=post_id)
+    current_post_likes=post.like
+
+    print(f"post:-{post}---------------------current_post_likes:-{current_post_likes}")
+
+    liked=Likes.objects.filter(user=user, Post=post).count()
+    if not liked:
+        liked = Likes.objects.create(user=user, Post=post)
+
+        current_post_likes=current_post_likes + 1
+
+    else:
+        liked=Likes.objects.filter(user=user, Post=post).delete()
+        current_post_likes=current_post_likes - 1
+
+    post.like = current_post_likes
+    post.save()
+
+    return  HttpResponseRedirect(reverse('PostDetail' , args=[post_id]) )
+
+
+
+
+  
