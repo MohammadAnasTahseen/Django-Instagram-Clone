@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from posts.models import Likes, Tag, Stream, Follow, Post
+from user_auths.models import UserProfile
 
 from django.http import HttpResponseRedirect
 
@@ -96,5 +97,19 @@ def PostLike(request,post_id):
 
 
 
+def FavoritePost(request,post_id):
+    user=request.user
+    post=Post.objects.get(id=post_id)
+    profile=UserProfile.objects.get(user=user)
+    if profile.favourite.filter(id=post_id).exists():
+        profile.favourite.remove(post)
+    else:
+        profile.favourite.add(post)
+    return  HttpResponseRedirect(reverse('PostDetail' , args=[post_id]) )
+
+   
+
+
+ 
 
   
