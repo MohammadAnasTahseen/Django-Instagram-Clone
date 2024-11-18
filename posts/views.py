@@ -31,7 +31,7 @@ def index(request):
         'user':user
     }
    
-    return render(request, 'index.html',context)
+    return render(request, 'Post_tempplates/index.html',context)
 
 
 def New_Post(request):
@@ -60,7 +60,7 @@ def New_Post(request):
     else:
         form=NewPost()
     context={'form':form}
-    return render(request,'new_post.html',context)
+    return render(request,'Post_tempplates/new_post.html',context)
 
 
 
@@ -70,7 +70,7 @@ def PostDetail(request,post_id):
     context={
         'post':post
     }
-    return render(request,'post_detail.html',context)
+    return render(request,'Post_tempplates/post_detail.html',context)
 
 
 def PostLike(request,post_id):

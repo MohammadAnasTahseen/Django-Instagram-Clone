@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from posts.models import Post
 from user_auths.models import UserProfile
 # Create your views here.
-def User_rofile(request,username):  
+def User_Profile(request,username):  
     user=get_object_or_404(User,username=username)
     profile=UserProfile.objects.get(user=user)
     url_name=resolve(request.path).url_name
@@ -17,9 +17,18 @@ def User_rofile(request,username):
           print("------------------Posts:-----------", posts)
 
     else:
-          posts=UserProfile.favourite.all()
+          posts=profile.favourite.all()
 
 
-    paginator = Paginator(Post, 8)
+    paginator = Paginator(posts, 3)
     page_number = request.GET.get('page')
     posts_paginator = paginator.get_page(page_number)
+
+    context={
+      #   'user':user,
+        'profile':profile,
+        'posts':posts,
+        'posts_paginator':posts_paginator,
+        'url_name':url_name
+    }
+    return render(request,'User_Templates/user_profile.html',context)
