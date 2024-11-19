@@ -70,15 +70,23 @@
 
                 
                 <div class="profile-user-settings">
-                    {% if url_name == 'profile' %}
-                        <a    class="btns profiele-edit-btn" style="font-weight: bolder; color: rgb(0, 255, 98); font-size: x-large;">Posts</a>
-                   
-                    
-                    {% else %}
-                       
-                        <a  class="btns profeile-edit-btn" style="font-weight: bolder; color: rgb(255, 115, 0); font-size: x-large;">Saved</a>
-                    {% endif %}
-                    </div>
+                    {% for post in posts_paginator %}
+                        <div>
+                            {% if url_name == 'profile' %}
+                                <a href="{% url 'FavoritePost' post.id %}" class="btns profiele-edit-btn" style="font-weight: bolder; color: rgb(0, 255, 98); font-size: x-large;">Posts</a>
+                            {% else %}
+                                <a href="{% url 'FavoritePost' post.id %}" class="btns profiele-edit-btn" style="font-weight: bolder; color: rgb(0, 0, 0); font-size: x-large;">Posts</a>
+                            {% endif %}
+                
+                            {% if url_name == 'FavoritePost' %}
+                                <a href="{% url 'FavoritePost' post.id %}" class="btns profeile-edit-btn" style="font-weight: bolder; color: rgb(255, 115, 0); font-size: x-large;">Saved</a>
+                            {% else %}
+                                <a href="{% url 'FavoritePost' post.id %}" class="btns profeile-edit-btn" style="font-weight: bolder; color: rgb(0, 0, 0); font-size: x-large;">Saved</a>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                
 
 
                  
