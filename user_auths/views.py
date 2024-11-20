@@ -16,12 +16,14 @@ def User_Profile(request,username):
           posts=Post.objects.filter(user=user).order_by('-postedTime')
 
           print("------------------Posts:-----------", posts)
+          
 
     else:
           posts=profile.favourite.all()
+          print("------------------favourite Posts:-----------", posts)
 
 
-    paginator = Paginator(posts, 3)
+    paginator = Paginator(posts, 1)
     page_number = request.GET.get('page')
     posts_paginator = paginator.get_page(page_number)
 
@@ -32,4 +34,5 @@ def User_Profile(request,username):
         'posts_paginator':posts_paginator,
         'url_name':url_name
     }
+    print("------------------Context:-----------", context)
     return render(request,'User_Templates/user_profile.html',context)
