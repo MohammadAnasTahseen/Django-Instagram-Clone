@@ -25,7 +25,8 @@ from user_auths import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('Post/', include('posts.urls')),
-    # path('user_profile_accounts/', include('user_auths.urls')),
+    path('users/', include('user_auths.urls')),
+  
 
 
 

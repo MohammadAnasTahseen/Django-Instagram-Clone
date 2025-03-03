@@ -47,8 +47,8 @@
                     
 
                     <h5 style="font-size: 15px;" class="profile-user-name">@{{profile.user.username}}</h5>
-                    <button class="btn profile-edit-btn">Edit Profile</button>
-
+              
+                     <a href="{% url 'edit_profile' %}">      <button class="btn profile-edit-btn">Edit Profile</button>  </a>
                     <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
                     <br><br>
                     {% if request.user.is_authenticated and request.user != profile.user %}

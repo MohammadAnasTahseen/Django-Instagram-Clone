@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
 from posts.models import Follow, Post, Stream
+from user_auths.forms import EditProfileForm
 from user_auths.models import UserProfile
 
 from django.db import transaction
@@ -83,3 +84,33 @@ def follow_user(request, username, option):
         return HttpResponseRedirect(reverse('profile', args=[username]))
 
 
+
+
+def edit_profile(request):
+    
+    user=request.user.id
+    profile = UserProfile.objects.get(user__id=user)
+
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            profile.picture = form.cleaned_data.get('picture')
+            profile.first_name = form.cleaned_data.get('first_name')
+            profile.last_name = form.cleaned_data.get('last_name')
+            profile.bio = form.cleaned_data.get('bio')
+            profile.url = form.cleaned_data.get('url')
+            profile.location = form.cleaned_data.get('location')
+
+            profile.save() 
+
+            return HttpResponseRedirect(reverse('profile', args=[profile.user.username]))
+    else:
+        form = EditProfileForm(instance=profile)
+        context={
+            'form':form,
+            
+            }
+    return render(request,'User_Templates/edit_profile.html',context)
+
+
+     

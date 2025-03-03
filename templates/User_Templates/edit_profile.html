@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<br><br>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{% static 'assets2/style.css' %}">
+  <title>Edit Profile</title>
+
+  <style>
+    /* Neumorphic Styles */
+    body {
+      background: #e0e5ec;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .form-box {
+      background: #e0e5ec;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 10px 10px 30px #b8bcc6, -10px -10px 30px #ffffff;
+      width: 400px;
+      text-align: center;
+    }
+
+    .form-box h3 {
+      font-size: 22px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      outline: none;
+      border-radius: 10px;
+      font-size: 16px;
+      box-shadow: inset 5px 5px 10px #b8bcc6, inset -5px -5px 10px #ffffff;
+      background: #e0e5ec;
+    }
+
+    .input-field::placeholder {
+      color: #777;
+    }
+.form-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: #e0e5ec;
+  box-shadow: 5px 5px 10px #b8bcc6, -5px -5px 10px #ffffff;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  color: #333;
+}
+
+.form-btn:hover {
+  background: #000; /* Black background on hover */
+  color: #fff; /* White text on hover */
+  /* box-shadow: none; Remove shadow for a pressed effect */
+  box-shadow: inset 5px 5px 10px #b8bcc6, inset -5px -5px 10px #ffffff;
+}
+    .profile-picture {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      box-shadow: 5px 5px 15px #b8bcc6, -5px -5px 15px #ffffff;
+      object-fit: cover;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="form-box">
+      <h3>Edit Profile</h3>
+
+      <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Profile Picture -->
+        {% if form.instance.image %}
+          <img src="{{ form.instance.image.url }}" alt="Profile Picture" class="profile-picture">
+        {% else %}
+          <img src="{% static 'assets2/default-profile.jpg' %}" alt="Profile Picture" class="profile-picture">
+        {% endif %}
+        <br>
+
+        <!-- Form Fields -->
+        {{ form.image }}
+        <input type="text" name="first_name" placeholder="First Name" value="{{ form.first_name.value }}" class="input-field">
+        <input type="text" name="last_name" placeholder="Last Name" value="{{ form.last_name.value }}" class="input-field">
+        <input type="text" name="bio" placeholder="Bio" value="{{ form.bio.value }}" class="input-field">
+        <input type="text" name="location" placeholder="Location" value="{{ form.location.value }}" class="input-field">
+        <input type="text" name="url" placeholder="URL" value="{{ form.url.value }}" class="input-field">
+
+        <!-- Submit Button -->
+        <button class="form-btn" type="submit">Update Profile</button>
+
+      </form>
+
+    </div>
+  </div>
+
+</body>
+
+</html>
+
+{% endblock content %}
