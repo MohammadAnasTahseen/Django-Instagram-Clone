@@ -32,6 +32,7 @@ urlpatterns = [
 
     path('<username>/',views.User_Profile, name='profile'),
     path('<username>/saved/', views.User_Profile, name='profilefavourite'),
+    path('<username>/follow/<option>', views.follow_user, name='follow_user'),
    
     
     ]

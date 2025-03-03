@@ -50,6 +50,19 @@
                     <button class="btn profile-edit-btn">Edit Profile</button>
 
                     <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
+                    <br><br>
+                    {% if request.user.is_authenticated and request.user != profile.user %}
+                        {% if follow_status == True %}
+                            <a href="{% url 'follow_user' profile.user 0 %}" class="btn profile-edit-btn" style="color: red;">Unfollow</a> <br><br>
+                        {% else %}
+                            <a href="{% url 'follow_user' profile.user 1 %}" class="btn profile-edit-btn" style="color: green;">Follow</a> <br><br>
+                        {% endif %}
+                    {% endif %}
+
+        
+                    <br>
+   
+
 
                 </div>
 
@@ -68,6 +81,8 @@
 
                 </div>
 
+                <br style="color: black;">
+
                 
                 <div class="profile-user-settings">
                     {% for post in posts_paginator %}
@@ -85,7 +100,9 @@
                             {% endif %}
                         </div>
                     {% endfor %}
-                </div>
+                </div> 
+
+           
                 
 
 
@@ -94,9 +111,9 @@
                 <div class="profile-stats">
 
                     <ul>
-                        <li><span class="profile-stat-count">164</span> posts</li>
-                        <li><span class="profile-stat-count">300k</span> followers</li>
-                        <li><span class="profile-stat-count">206</span> following</li>
+                        <li><span class="profile-stat-count">{{posts_count}}</span> posts</li>
+                        <li><span class="profile-stat-count">{{followers_count}}</span> followers</li>
+                        <li><span class="profile-stat-count">{{following_count}}</span> following</li>
                     </ul>
 
                 </div>
@@ -134,6 +151,8 @@
 
                 </div></a>
                 {% endfor %}
+
+     
 
                 
 
