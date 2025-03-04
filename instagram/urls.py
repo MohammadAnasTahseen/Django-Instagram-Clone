@@ -26,6 +26,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('Post/', include('posts.urls')),
     path('users/', include('user_auths.urls')),
+
+    # path('comments/', include('comments.urls')),
   
 
 

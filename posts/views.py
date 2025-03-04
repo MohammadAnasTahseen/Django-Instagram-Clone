@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from comments.forms import PostCommentsForm
+from comments.models import Comment
 from posts.models import Likes, Tag, Stream, Follow, Post
 from user_auths.models import UserProfile
 
@@ -65,58 +67,78 @@ def New_Post(request):
 
 
 
-def PostDetail(request,post_id):
-    post=get_object_or_404(Post,id=post_id)
-    context={
-        'post':post
-    }
-    return render(request,'Post_tempplates/post_detail.html',context)
 
 
-# def PostLike(request,post_id):
-#     user=request.user
-#     post=Post.objects.get(id=post_id)
-#     current_post_likes=post.like
 
-#     print(f"post:-{post}---------------------current_post_likes:-{current_post_likes}")
+def PostDetail(request, post_id):
+    user = request.user
+    post = get_object_or_404(Post, id=post_id)
+    comments = Comment.objects.filter(post=post).order_by('-date')
 
-#     liked=Likes.objects.filter(user=user, Post=post).count()
-#     if not liked:
-#         liked = Likes.objects.create(user=user, Post=post)
-
-#         current_post_likes=current_post_likes + 1
-
-#     else:
-#         liked=Likes.objects.filter(user=user, Post=post).delete()
-#         current_post_likes=current_post_likes - 1
-
-#     post.like = current_post_likes
-#     post.save()
-
-#     return  HttpResponseRedirect(reverse('PostDetail' , args=[post_id]) )
-
-def PostLike(request, post_id):
     if request.method == "POST":
-        user = request.user
-        post = Post.objects.get(id=post_id)
-        liked = Likes.objects.filter(user=user, Post=post).exists()
+        form = PostCommentsForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = user
+            comment.save()
+            return HttpResponseRedirect(reverse('PostDetail', args=[post.id]))
+    else:
+        form = PostCommentsForm()
 
-        if liked:
-            Likes.objects.filter(user=user, Post=post).delete()
-            post.like -= 1
-            liked = False
-        else:
-            Likes.objects.create(user=user, Post=post)
-            post.like += 1
-            liked = True
+    context = {
+        'post': post,
+        'form': form,
+        'comments': comments
+    }
 
-        post.save()
+    return render(request, 'Post_tempplates/post_detail.html', context)
 
-        # Respond with JSON if it's an AJAX request
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            return JsonResponse({'liked': liked, 'like_count': post.like})
 
-        return HttpResponseRedirect(reverse('PostDetail', args=[post_id]))
+def PostLike(request,post_id):
+    user=request.user
+    post=Post.objects.get(id=post_id)
+    current_post_likes=post.like
+
+    print(f"post:-{post}---------------------current_post_likes:-{current_post_likes}")
+
+    liked=Likes.objects.filter(user=user, Post=post).count()
+    if not liked:
+        liked = Likes.objects.create(user=user, Post=post)
+
+        current_post_likes=current_post_likes + 1
+
+    else:
+        liked=Likes.objects.filter(user=user, Post=post).delete()
+        current_post_likes=current_post_likes - 1
+
+    post.like = current_post_likes
+    post.save()
+
+    return  HttpResponseRedirect(reverse('PostDetail' , args=[post_id]) )
+
+# def PostLike(request, post_id):
+#     if request.method == "POST":
+#         user = request.user
+#         post = Post.objects.get(id=post_id)
+#         liked = Likes.objects.filter(user=user, Post=post).exists()
+
+#         if liked:
+#             Likes.objects.filter(user=user, Post=post).delete()
+#             post.like -= 1
+#             liked = False
+#         else:
+#             Likes.objects.create(user=user, Post=post)
+#             post.like += 1
+#             liked = True
+
+#         post.save()
+
+#         # Respond with JSON if it's an AJAX request
+#         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+#             return JsonResponse({'liked': liked, 'like_count': post.like})
+
+#         return HttpResponseRedirect(reverse('PostDetail', args=[post_id]))
 
 
 

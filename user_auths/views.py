@@ -88,8 +88,11 @@ def follow_user(request, username, option):
 
 def edit_profile(request):
     
+    print("------------------Edit Profile:-----------")
+    
     user=request.user.id
     profile = UserProfile.objects.get(user__id=user)
+    # print("------------------Profile:-----------", profile.first_name)
 
     if request.method == 'POST':
         form = EditProfileForm(request.POST, request.FILES, instance=profile)
