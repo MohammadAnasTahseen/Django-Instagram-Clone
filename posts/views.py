@@ -64,7 +64,41 @@ def New_Post(request):
     context={'form':form}
     return render(request,'Post_tempplates/new_post.html',context)
 
+                                   ########################## for own post and followed users posts ##########################
+# def index(request):
+    # from django.db.models import Q
+#     user = request.user
+#     print(f"Current User: {user}")
 
+#     # 🔹 Get all posts from the Stream table where `stream_user` is the current user
+#     stream_posts = Stream.objects.filter(stream_user=user)
+#     print(f"Stream Posts for {user}: {stream_posts}")
+
+#     # 🔹 Get post IDs from the stream (i.e., posts made by followed users)
+#     group_ids = [post.post.id for post in stream_posts]
+
+#     # 🔹 Get posts: 
+#     # 1️⃣ Posts from followed users (from Stream table)
+#     # 2️⃣ User's own posts
+#     posted_items = Post.objects.filter(
+#         Q(id__in=group_ids) | Q(user=user)
+#     ).order_by('-postedTime')
+
+#     print("Final Posts in Feed:")
+#     for post in posted_items:
+#         print(f"Post ID: {post.id} | Posted by: {post.user} | Likes: {post.like}")
+
+#     context = {
+#         'post_items': posted_items,
+#         'user': user
+#     }
+
+#     return render(request, 'Post_tempplates/index.html', context)
+
+
+
+
+               ########################## for own post and followed users posts ##########################
 
 
 
