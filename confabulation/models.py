@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.db.models import Max
 from django.forms import DateTimeField
 
+from django.db.models import Q
+
 
 class User_Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
@@ -37,7 +39,9 @@ class User_Message(models.Model):
 
     def get_message(user):
         users = []
-        messages = User_Message.objects.filter(user=user).values('reciepient').annotate(last=Max('date')).order_by('-last')
+        messages = User_Message.objects.filter(Q(user=user) | Q(reciepient=user)).values('reciepient').annotate(last=Max('date')).order_by('-last')
+
+        # messages = User_Message.objects.filter(user=user).values('reciepient').annotate(last=Max('date')).order_by('-last')
         for message in messages:
             users.append({
                 'user': User.objects.get(pk=message['reciepient']),

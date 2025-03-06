@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 
 @login_required
 def inbox(request):
+    print("###################()))))))))))))))")
     user = request.user
     messages = User_Message.get_message(user=request.user)
     active_direct = None
@@ -33,58 +34,62 @@ def inbox(request):
     return render(request, 'Confabulations/inbox_msg.html', context)
 
 
-@login_required
-def Directs(request, username):
-    user  = request.user
-    messages = User_Message.get_message(user=user)
-    active_direct = username
-    directs = User_Message.objects.filter(user=user, reciepient__username=username)  
-    directs.update(is_read=True)
+# @login_required
+# def Directs(request, username):
+#     user  = request.user
+#     messages = User_Message.get_message(user=user)
+#     active_direct = username
+#     directs = User_Message.objects.filter(
+#     Q(user=user, reciepient__username=username) | Q(user__username=username, reciepient=user)
+# )
 
-    for message in messages:
-            if message['user'].username == username:
-                message['unread'] = 0
-    context = {
-        'directs': directs,
-        'messages': messages,
-        'active_direct': active_direct,
-    }
-    return render(request, 'Confabulations/inbox_msg.html', context)
+#     # directs = User_Message.objects.filter(user=user, reciepient__username=username)  
+#     directs.update(is_read=True)
 
-def SendDirect(request):
-    from_user = request.user
-    to_user_username = request.POST.get('to_user')
-    body = request.POST.get('body')
+#     for message in messages:
+#             if message['user'].username == username:
+#                 message['unread'] = 0
+#     context = {
+#         'directs': directs,
+#         'messages': messages,
+#         'active_direct': active_direct,
+#     }
+#     return render(request, 'Confabulations/inbox_msg.html', context)
 
-    if request.method == "POST":
-        to_user = User.objects.get(username=to_user_username)
-        User_Message.sender_message(from_user, to_user, body)
-        return redirect('message')
+# def SendDirect(request):
+#     from_user = request.user
+#     to_user_username = request.POST.get('to_user')
+#     body = request.POST.get('body')
 
-def UserSearch(request):
-    query = request.GET.get('q')
-    context = {}
-    if query:
-        users = User.objects.filter(Q(username__icontains=query))
+#     if request.method == "POST":
+#         to_user = User.objects.get(username=to_user_username)
+#         User_Message.sender_message(from_user, to_user, body)
+#         return redirect('message')
 
-        # Paginator
-        paginator = Paginator(users, 8)
-        page_number = request.GET.get('page')
-        users_paginator = paginator.get_page(page_number)
+# def UserSearch(request):
+#     query = request.GET.get('q')
+#     context = {}
+#     if query:
+#         users = User.objects.filter(Q(username__icontains=query))
 
-        context = {
-            'users': users_paginator,
-            }
+#         # Paginator
+#         paginator = Paginator(users, 8)
+#         page_number = request.GET.get('page')
+#         users_paginator = paginator.get_page(page_number)
 
-    return render(request, 'Confabulations/search.html', context)
+#         context = {
+#             'users': users_paginator,
+#             }
 
-def NewConversation(request, username):
-    from_user = request.user
-    body = ''
-    try:
-        to_user = User.objects.get(username=username)
-    except Exception as e:
-        return redirect('search-users')
-    if from_user != to_user:
-        User_Message.sender_message(from_user, to_user, body)
-    return redirect('message')
+#     return render(request, 'Confabulations/search.html', context)
+
+# def NewConversation(request, username):
+#     from_user = request.user
+#     body = ''
+#     try:
+#         to_user = User.objects.get(username=username)
+#     except Exception as e:
+#         return redirect('search-users')
+#     if from_user != to_user:
+#         User_Message.sender_message(from_user, to_user, body)
+#     return redirect('message')
