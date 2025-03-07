@@ -9,9 +9,8 @@ from django.core.paginator import Paginator
 
 @login_required
 def inbox(request):
-    print("###################()))))))))))))))")
     user = request.user
-    messages = User_Message.get_message(user=request.user)
+    messages = User_Message.get_message(user=user)
     active_direct = None
     directs = None
     profile = get_object_or_404(UserProfile, user=user)
@@ -19,14 +18,17 @@ def inbox(request):
     if messages:
         message = messages[0]
         active_direct = message['user'].username
-        directs = User_Message.objects.filter(user=request.user, reciepient=message['user'])
+        directs = User_Message.objects.filter(
+            Q(user=user, reciepient=message['user']) | Q(user=message['user'], reciepient=user)
+        ).order_by('date')
         directs.update(is_read=True)
 
         for message in messages:
             if message['user'].username == active_direct:
                 message['unread'] = 0
+
     context = {
-        'directs':directs,
+        'directs': directs,
         'messages': messages,
         'active_direct': active_direct,
         'profile': profile,

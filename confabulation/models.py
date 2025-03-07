@@ -37,16 +37,42 @@ class User_Message(models.Model):
         reciepient_message.save()
         return sender_message
 
+    # def get_message(user):
+    #     users = []
+    #     messages = User_Message.objects.filter(Q(user=user) | Q(reciepient=user)).values('reciepient').annotate(last=Max('date')).order_by('-last')
+
+    #     # messages = User_Message.objects.filter(user=user).values('reciepient').annotate(last=Max('date')).order_by('-last')
+    #     for message in messages:
+    #         users.append({
+    #             'user': User.objects.get(pk=message['reciepient']),
+    #             'last': message['last'],
+    #             'unread': User_Message.objects.filter(user=user, reciepient__pk=message['reciepient'], is_read=False).count()
+    #         })
+    #     return users
+
+    @staticmethod
     def get_message(user):
         users = []
-        messages = User_Message.objects.filter(Q(user=user) | Q(reciepient=user)).values('reciepient').annotate(last=Max('date')).order_by('-last')
+        messages = User_Message.objects.filter(
+            Q(sender=user) | Q(reciepient=user)  # Track both sent & received messages
+        ).values('sender', 'reciepient').annotate(last=Max('date')).order_by('-last')
 
-        # messages = User_Message.objects.filter(user=user).values('reciepient').annotate(last=Max('date')).order_by('-last')
         for message in messages:
+            # Determine the other user in the conversation
+            if message['sender'] == user.id:
+                other_user = User.objects.get(pk=message['reciepient'])  # User is the sender
+            else:
+                other_user = User.objects.get(pk=message['sender'])  # User is the recipient
+            
             users.append({
-                'user': User.objects.get(pk=message['reciepient']),
+                'user': other_user,
                 'last': message['last'],
-                'unread': User_Message.objects.filter(user=user, reciepient__pk=message['reciepient'], is_read=False).count()
+                'unread': User_Message.objects.filter(
+                    sender=other_user, reciepient=user, is_read=False  # Count unread messages the user received
+                ).count()
             })
+
         return users
+
+
             
