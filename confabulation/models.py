@@ -17,62 +17,66 @@ class User_Message(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
 
-    def sender_message(from_user, to_user, body):
-        sender_message = User_Message(
-            user=from_user,
-            sender = from_user,
-            reciepient = to_user,
-            body = body,
-            is_read = True
-            )
-        sender_message.save()
+    # def sender_message(from_user, to_user, body):
+    #     sender_message = User_Message(
+    #         user=from_user,
+    #         sender = from_user,
+    #         reciepient = to_user,
+    #         body = body,
+    #         is_read = True
+    #         )
+    #     sender_message.save()
     
-        reciepient_message = User_Message(
-            user=to_user,
-            sender = from_user,
-            reciepient = from_user,
-            body = body,
-            is_read = True
-            )
-        reciepient_message.save()
-        return sender_message
+    #     reciepient_message = User_Message(
+    #         user=to_user,
+    #         sender = from_user,
+    #         reciepient = from_user,
+    #         body = body,
+    #         is_read = True
+    #         )
+    #     reciepient_message.save()
+    #     return sender_message
+    
+    def sender_message(from_user, to_user, body):
+        print("from models sender message called")
+        message = User_Message.objects.create(
+            user=from_user,
+            sender=from_user,
+            reciepient=to_user,
+            body=body,
+            is_read=False  # Message is unread initially
+    )
+        return message
 
-    # def get_message(user):
-    #     users = []
-    #     messages = User_Message.objects.filter(Q(user=user) | Q(reciepient=user)).values('reciepient').annotate(last=Max('date')).order_by('-last')
 
-    #     # messages = User_Message.objects.filter(user=user).values('reciepient').annotate(last=Max('date')).order_by('-last')
-    #     for message in messages:
-    #         users.append({
-    #             'user': User.objects.get(pk=message['reciepient']),
-    #             'last': message['last'],
-    #             'unread': User_Message.objects.filter(user=user, reciepient__pk=message['reciepient'], is_read=False).count()
-    #         })
-    #     return users
+
+
+
 
     @staticmethod
     def get_message(user):
-        users = []
+        users = {}
         messages = User_Message.objects.filter(
-            Q(sender=user) | Q(reciepient=user)  # Track both sent & received messages
+            Q(sender=user) | Q(reciepient=user)
         ).values('sender', 'reciepient').annotate(last=Max('date')).order_by('-last')
 
         for message in messages:
-            # Determine the other user in the conversation
             if message['sender'] == user.id:
-                other_user = User.objects.get(pk=message['reciepient'])  # User is the sender
+                other_user_id = message['reciepient']
             else:
-                other_user = User.objects.get(pk=message['sender'])  # User is the recipient
-            
-            users.append({
-                'user': other_user,
-                'last': message['last'],
-                'unread': User_Message.objects.filter(
-                    sender=other_user, reciepient=user, is_read=False  # Count unread messages the user received
-                ).count()
-            })
+                other_user_id = message['sender']
 
-        return users
+            if other_user_id not in users:  # Prevent duplicate users
+                other_user = User.objects.get(pk=other_user_id)
+                users[other_user_id] = {
+                    'user': other_user,
+                    'last': message['last'],
+                    'unread': User_Message.objects.filter(
+                        sender=other_user, reciepient=user, is_read=False
+                    ).count()
+                }
+
+        return list(users.values())  # Convert dictionary back to list
 
 
             

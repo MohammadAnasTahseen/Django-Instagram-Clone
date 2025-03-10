@@ -6,6 +6,20 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 	<style>
+
+.list-group-item.active {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) !important;
+    color: white;  /* Make the text white to contrast with the gradient */
+    border: none;  /* Optional: remove the border to clean up the appearance */
+}
+
+#send_mesg{
+	background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888) !important;
+	color:rgb(255, 255, 255)
+
+
+}
+
 		body{margin-top:20px;}
 
 .chat-online {
@@ -72,7 +86,7 @@
 					</div>
 			
                     {% for message in messages %}
-					<a href="" class="list-group-item list-group-item-action border-0 ">
+					<a href="{% url 'directs' message.user.username %}" class="list-group-item list-group-item-action border-0 {% if message.user.username == active_direct %}active{% endif %} ">
 						<div class="badge bg-success float-right"></div>
 						<div class="d-flex align-items-start pb-2">
 							
@@ -147,12 +161,12 @@
 
 						
 						<div class="flex-grow-0 py-3 px-4 border-top">
-							<form method="POST" action="">
+							<form method="POST" action=" {% url 'send-directs' %} " role="form">
 								{% csrf_token %}
 								<div class="input-group">
-									<input type="hidden" name="to_user" id="" value="">
+									<input type="hidden" name="to_user" id="" value="{{active_direct}}">
 									<input name="body" type="text" class="form-control" placeholder="Type your message">
-									<button class="btn btn-primary" type="submit">Send</button>
+									<button class="send_mesg" id="send_mesg" type="submit">Send</button>
 								</div>
 							</form>
 							
