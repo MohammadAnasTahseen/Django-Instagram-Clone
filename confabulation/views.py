@@ -1,4 +1,5 @@
 
+from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from confabulation.models import User_Message
@@ -82,22 +83,32 @@ def SendDirect(request):
         User_Message.sender_message(from_user, to_user, body)
         return redirect('message')
 
+def UserSearch(request):
+    query = request.GET.get('q')
+    context = {}
+    if query:
+        users = User.objects.filter(Q(username__icontains=query))
+
+        # Paginator
+        paginator = Paginator(users, 8)
+        page_number = request.GET.get('page')
+        users_paginator = paginator.get_page(page_number)
+
+        context = { 
+            'users': users_paginator,
+            }
+
+    return render(request, 'Confabulations/search.html', context)
+
+
 # def UserSearch(request):
-#     query = request.GET.get('q')
-#     context = {}
+#     query = request.GET.get('q', '')
 #     if query:
-#         users = User.objects.filter(Q(username__icontains=query))
+#         users = User.objects.filter(Q(username__icontains=query)).values('username', 'userprofile__image', 'userprofile__first_name', 'userprofile__last_name')
 
-#         # Paginator
-#         paginator = Paginator(users, 8)
-#         page_number = request.GET.get('page')
-#         users_paginator = paginator.get_page(page_number)
+#         return JsonResponse({'users': list(users)})
 
-#         context = {
-#             'users': users_paginator,
-#             }
-
-#     return render(request, 'Confabulations/search.html', context)
+#     return JsonResponse({'users': []})
 
 # def NewConversation(request, username):
 #     from_user = request.user

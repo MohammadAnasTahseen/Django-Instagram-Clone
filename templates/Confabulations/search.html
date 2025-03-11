@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<br><br>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script>
+  <link rel="stylesheet" href="{% static 'assets2/style.css' %}">
+  <title>Instagram Login Form</title>
+</head>
+
+<body>
+
+<div id="wrapper">
+    <div class="container">
+      <div class="phone-app-ddemo"></div>
+      <div class="form-data">
+        
+        <form action="" method="GET">
+            <div class="headedr__search">
+                <input type="text" placeholder="Search" name="q" value="{{ request.GET.q }}">
+                <button class="btn btn-primary" type="submit">Search</button>
+                
+            </div>
+        </form>
+
+        <form action="" method="POST" enctype="multipart/form-data">
+          <div class="logo">
+            <h3 style="padding-top: 5px; font-size: 20px;">Search Results</h3>
+          </div>
+
+        {% for user in users %}
+            <div class="side-menu__user-profile" style="text-align: start; border: solid rgba(192, 192, 192, 0.514) 1px; padding: 10px; border-radius: 25px;">
+                <a href="{% url 'profile' user.username %}" class="side-menu__user-avatar">
+                    {% if user.userprofile.image.url %}
+                    <img src="{{ user.userprofile.image.url }}" alt="User Picture">
+                    {% else %}
+                    <img src="{% static 'assets1/default.jpg' %}" alt="User Picture">
+
+                    {% endif %}
+                </a>
+                <div class="side-menu__user-idnfo">
+                    {% if user.userprofile.first_name %}
+                    <a href="{% url 'profile' user.username %}" style="font-size: 15px; color: black; text-align: center;">{{user.userprofile.first_name|title }} {{user.userprofile.last_name|title }}</a>
+                    {% else%}
+                    <a href="{% url 'profile' user.username %}">Instagram User</a>
+
+                    {% endif %}
+                    <br>
+                    <span style="font-size: 14px;">@{{user.username}}</span>
+                    <br>
+                    <a href="{% url 'profile' user.username %}" style="color: blue;" class="side-menu__user-button">View Profile</a>
+
+                </div>
+            </div>
+            <!-- <hr> -->
+        {% endfor %}
+        
+          
+        </form>
+        
+      </div>
+    </div>
+
+
+
+  </div>
+
+
+  <input type="text" id="search-box" placeholder="Search" name="q">
+<div id="search-results"></div>
+ 
+
+</body>
+
+</html>
+{% endblock content %}
+
+
+
+
+
+{% comment %} {% block script %}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#search-box").keyup(function() {
+        let query = $(this).val();
+        if (query.length > 0) {
+            $.ajax({
+                url: "{% url 'UserSearch_live' %}",  // Ensure this matches your Django URL name
+                data: {'q': query},
+                dataType: 'json',
+                success: function(response) {
+                    let results = response.users;
+                    let resultsHtml = "";
+
+                    if (results.length > 0) {
+                        results.forEach(user => {
+                            resultsHtml += `
+                                <div class="side-menu__user-profile" style="padding: 10px; border: 1px solid rgba(192, 192, 192, 0.514); border-radius: 25px;">
+                                    <a href="/profile/${user.username}" class="side-menu__user-avatar">
+                                        <img src="${user.userprofile__image || '/static/assets1/default.jpg'}" alt="User Picture">
+                                    </a>
+                                    <div class="side-menu__user-idnfo">
+                                        <a href="/profile/${user.username}" style="font-size: 15px; color: black;">${user.userprofile__first_name || "Instagram User"} ${user.userprofile__last_name || ""}</a>
+                                        <br>
+                                        <span style="font-size: 14px;">@${user.username}</span>
+                                        <br>
+                                        <a href="/profile/${user.username}" style="color: blue;">View Profile</a>
+                                    </div>
+                                </div>`;
+                        });
+                    } else {
+                        resultsHtml = "<p>No users found.</p>";
+                    }
+                    
+                    $("#search-results").html(resultsHtml);
+                }
+            });
+        } else {
+            $("#search-results").html("");
+        }
+    });
+});
+</script>
+
+
+{% endblock %} {% endcomment %}

@@ -97,7 +97,8 @@
     <!-- User List (Left) -->
     <div class="user-list">
         <h1 class="h3 mb-3 mt-5">Messages</h1>
-        <a href="#" class="btn btn-success mb-3">New Message</a>
+		<!-- <input type="text" class="form-control mb-3" placeholder="Search user"> -->
+        <a href="{% url 'search-users' %}" class="btn btn-success mb-3">New Message</a>
         {% for message in messages %}
         <a href="{% url 'directs' message.user.username %}" class="list-group-item list-group-item-action {% if message.user.username == active_direct %}active{% endif %}">
             <div class="d-flex align-items-center">
@@ -119,7 +120,8 @@
                 <img src="{{ direct.sender.userprofile.image.url }}" class="rounded-circle" width="40" height="40">
                 <div class="chat-message-content {% if direct.sender == request.user %}sent{% else %}received{% endif %}">
                     <p>{{ direct.body }}</p>
-                    <small class="chat-timestamp">{{ direct.date|date:"d M, Y H:i" }}</small>
+                    <small class="chat-timestamp">{{ direct.date|date:"d M, Y h:i A" }}</small>
+
                 </div>
             </div>
             {% endfor %}
