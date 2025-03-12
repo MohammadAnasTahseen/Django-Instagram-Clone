@@ -60,7 +60,7 @@
                     {% endif %}
 
                               {% if request.user.is_authenticated and request.user != profile.user %}
-                                <a href="{% url 'conversation' profile.user  %}" class="btn profile-edit-btn">Message</a> <br><br>
+                                <a href="{% url 'NewConfabulation' profile.user  %}" class="btn profile-edit-btn">Message</a> <br><br>
                         {% endif %}
                         <br>
 

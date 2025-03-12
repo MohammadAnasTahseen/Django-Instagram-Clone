@@ -100,7 +100,7 @@ def UserSearch(request):
 
     return render(request, 'Confabulations/search.html', context)
 
-
+                 ######################################  for jquery live search###############################
 # def UserSearch(request):
 #     query = request.GET.get('q', '')
 #     if query:
@@ -110,13 +110,17 @@ def UserSearch(request):
 
 #     return JsonResponse({'users': []})
 
-# def NewConversation(request, username):
-#     from_user = request.user
-#     body = ''
-#     try:
-#         to_user = User.objects.get(username=username)
-#     except Exception as e:
-#         return redirect('search-users')
-#     if from_user != to_user:
-#         User_Message.sender_message(from_user, to_user, body)
-#     return redirect('message')
+
+                 ######################################  for jquery live search###############################
+
+def NewConfabulation(request, username):
+    from_user = request.user
+    body = ''
+    try:
+        to_user = User.objects.get(username=username)
+    except Exception as e:
+        print("exception error is making new confabulation",e)
+        return redirect('search')
+    if from_user != to_user:
+        User_Message.sender_message(from_user, to_user, body)
+    return redirect('message')
