@@ -1,12 +1,12 @@
 from urllib import request
 from django.http import HttpResponseRedirect
 from django.urls import resolve, reverse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
 from posts.models import Follow, Post, Stream
-from user_auths.forms import EditProfileForm
+from user_auths.forms import EditProfileForm, UserRegisterForm
 from user_auths.models import UserProfile
 
 from django.db import transaction
@@ -117,3 +117,32 @@ def edit_profile(request):
 
 
      
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+
+def register(request):
+    if request.method == "POST":
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            # Profile.get_or_create(user=request.user)
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Hurray your account was created!!')
+
+            # Automatically Log In The User
+            new_user = authenticate(username=form.cleaned_data['username'],
+                                    password=form.cleaned_data['password1'],)
+            login(request, new_user)
+            # return redirect('editprofile')
+            return redirect('index')
+            
+
+
+    elif request.user.is_authenticated:
+        return redirect('index')
+    else:
+        form = UserRegisterForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'Auth_Templates/sign_up.html', context)
