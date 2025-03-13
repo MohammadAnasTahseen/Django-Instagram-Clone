@@ -18,26 +18,52 @@
     <div class="container">
       <div class="phone-app-demo"></div>
       <div class="form-data">
-        <form action="sign-up" method="POST">
+        <form action="{% url 'sign-up' %}" method="POST">
           {% csrf_token %}
           <div class="logo">
             <img src="{% static 'assets2/images/logo.png' %}" alt="logo">
           </div>
           <!-- <input type="text" placeholder="Phone number, username, or email"> -->
           <!-- <input type="password" placeholder="Password"> -->
-          {{form.username}}
-          {{form.email}}
-          {{form.password1}}
-          {{form.password2}}
+
+          <div> 
+                   {{form.username}}
+            {{ form.username.errors }} </div>
+
+
+          <div>
+            {{form.email}}
+            {{ form.email.errors }}
+          
+          </div>
+
+
+          <div> 
+            
+            {{form.password1}}
+            {{ form.password1.errors }}
+
+          </div>
+
+
+
+          <div> 
+            {{form.password2}}
+            {{ form.password2.errors }}
+          </div>
+
+
+  
+
+
+         
           <button class="form-btn" type="submit">Sign up</button>
 
 
-          <!-- <a href="index.html" class="form-btn" type="submit">Log in</a> -->
+
 
         </form>
-        <!-- <div class="sign-up">
-          Don't have an account? <a href="{% url 'sign_in' %}">Sign In</a>
-        </div> -->
+
 
       </div>
     </div>

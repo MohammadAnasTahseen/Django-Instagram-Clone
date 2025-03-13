@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 
 from posts.models import Follow, Post, Stream
-from user_auths.forms import EditProfileForm, UserRegisterForm
+from user_auths.forms import EditProfileForm, UserLoginForm, UserRegisterForm
 from user_auths.models import UserProfile
 
 from django.db import transaction
@@ -121,28 +121,51 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 
 def register(request):
+    print("------------------Register:-----------")
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
+        print("------------------Form:-----------", form)
         if form.is_valid():
-            new_user = form.save()
-            # Profile.get_or_create(user=request.user)
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Hurray your account was created!!')
-
-            # Automatically Log In The User
-            new_user = authenticate(username=form.cleaned_data['username'],
-                                    password=form.cleaned_data['password1'],)
-            login(request, new_user)
-            # return redirect('editprofile')
-            return redirect('index')
-            
-
-
-    elif request.user.is_authenticated:
-        return redirect('index')
+            print("##########################form is valid")
+            form.save()  # Just save the user, don't log them in
+            messages.success(request, "Your account has been created! Please log in.")
+            return redirect('login')  # Redirect to login page after successful registration
+        else:
+            messages.error(request, "There was an error. Please try again.")
     else:
         form = UserRegisterForm()
-    context = {
-        'form': form,
-    }
-    return render(request, 'Auth_Templates/sign_up.html', context)
+
+    return render(request, 'Auth_Templates/sign_up.html', {'form': form})
+
+
+def login_view(request):
+    print(f"---- Request Method: {request.method} ----")
+    
+    if request.method == 'POST':
+        print(f"POST Data: {request.POST}")  # Debugging
+        
+        form = UserLoginForm(request,request.POST)
+        if form.is_valid():
+            print("Form is valid")
+            
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            print(f"Username: {username}, Password: {password}")
+            
+            user = authenticate(request, username=username, password=password)
+            
+            if user is not None:
+                login(request, user)
+                print("User logged in successfully")
+                return redirect('index')
+            else:
+                print("Invalid username or password")
+                form.add_error(None, "Invalid username or password")
+        else:
+            print("Form is NOT valid")
+            print(form.errors)  # Print form errors for debugging
+
+    else:
+        form = UserLoginForm()
+    
+    return render(request, 'Auth_Templates/login.html', {'form': form})

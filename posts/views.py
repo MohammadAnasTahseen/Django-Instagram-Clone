@@ -66,7 +66,7 @@ def New_Post(request):
 
                                    ########################## for own post and followed users posts ##########################
 # def index(request):
-    # from django.db.models import Q
+#     from django.db.models import Q
 #     user = request.user
 #     print(f"Current User: {user}")
 
