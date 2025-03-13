@@ -25,7 +25,7 @@ from user_auths import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('Post/', include('posts.urls')),
-    path('users/', include('user_auths.urls')),
+    path('', include('user_auths.urls')),
     path('confabulation/', include('confabulation.urls')),
 
     # path('comments/', include('comments.urls')),
