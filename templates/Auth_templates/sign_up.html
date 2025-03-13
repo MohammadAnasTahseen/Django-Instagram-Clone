@@ -9,68 +9,114 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="https://kit.fontawesome.com/fc1e235b2e.js"></script>
   <link rel="stylesheet" href="{% static 'assets2/style.css' %}">
+  <link rel="stylesheet" 
+  href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
   <title>Instagram | Register</title>
 </head>
 
 <body>
 
-  <div id="wrapper">
+  <div id="wrapper" class="d-flex justify-content-center align-items-center vh-100">
     <div class="container">
-      <div class="phone-app-demo"></div>
-      <div class="form-data">
-        <form action="{% url 'sign-up' %}" method="POST">
-          {% csrf_token %}
-          <div class="logo">
-            <img src="{% static 'assets2/images/logo.png' %}" alt="logo">
-          </div>
-          <!-- <input type="text" placeholder="Phone number, username, or email"> -->
-          <!-- <input type="password" placeholder="Password"> -->
+      
+      <div class="row justify-content-center">
 
-          <div> 
-                   {{form.username}}
-            {{ form.username.errors }} </div>
-
-
-          <div>
-            {{form.email}}
-            {{ form.email.errors }}
-          
-          </div>
-
-
-          <div> 
-            
-            {{form.password1}}
-            {{ form.password1.errors }}
-
-          </div>
-
-
-
-          <div> 
-            {{form.password2}}
-            {{ form.password2.errors }}
-          </div>
-
-
+        <div class="col-md-6 d-none d-md-block">
+          <div class="phone-app-demo text-center">
+     
   
+          </div>
+        </div>
 
+        <div class="col-md-6">
+          <div class="form-data p-4 shadow-lg rounded bg-white">
+            
+            <form action="{% url 'sign-up' %}" method="POST">
+              {% csrf_token %}
+              
+              <div class="text-center mb-3">
+                <img src="{% static 'assets2/images/logo.png' %}" alt="logo" class="img-fluid" style="max-width: 150px;">
+              </div>
 
-         
-          <button class="form-btn" type="submit">Sign up</button>
+              <!-- Username Field -->
+              <div class="mb-3">
+                <label class="form-label">Username</label>
+                {{ form.username }}
+                <div class="text-danger small">{{ form.username.errors }}</div>
+              </div>
 
+              <!-- Email Field -->
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                {{ form.email }}
+                <div class="text-danger small">{{ form.email.errors }}</div>
+              </div>
 
+              <!-- Password Field -->
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                {{ form.password1 }}
+                <div class="text-danger small">{{ form.password1.errors }}</div>
+              </div>
 
+              <!-- Confirm Password Field -->
+              <div class="mb-3">
+                <label class="form-label">Confirm Password</label>
+                {{ form.password2 }}
+                <div class="text-danger small">{{ form.password2.errors }}</div>
+              </div>
 
-        </form>
+              <!-- Display non-field errors -->
+              {% if form.non_field_errors %}
+                <div class="alert alert-danger p-2">
+                  {{ form.non_field_errors }}
+                </div>
+              {% endif %}
 
+              <!-- Submit Button -->
+              <button class="form-btn w-100 mt-3" type="submit">Sign up</button>
 
+              <button class="" type="submit" id="check">Sign up</button>
+            </form>
+
+          </div>
+        </div>
       </div>
+
     </div>
-
-
   </div>
 
 </body>
 
 </html>
+
+
+{% block script %}
+
+<script>
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  
+window.addEventListener("beforeunload", function (event) {
+
+  myFunction();
+
+
+
+
+});
+
+});
+
+function myFunction() {
+  console.log("Page was refreshed!");
+}
+
+
+
+</script>
+
+
+
+{% endblock %}

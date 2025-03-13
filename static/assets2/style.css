@@ -57,8 +57,8 @@ body {
 }
 
 .form-data {
-  width: 100%;
-  max-width: 35rem;
+  width:1000px;
+  max-width: 100rem;
   margin-top: 1rem;
   margin-left: auto;
   margin-right: auto;

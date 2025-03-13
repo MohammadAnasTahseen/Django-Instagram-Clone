@@ -8,42 +8,54 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Login - My Website</title>
   <link rel="stylesheet" href="{% static 'assets2/style.css' %}">
+  <link rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 </head>
 <body>
 
-  <div id="wrapper">
-    <div class="container">
-      <div class="form-data">
-        <form method="POST" action="{% url 'login' %}">
-          {% csrf_token %}
-          <div class="logo">
-            <img src="{% static 'assets2/images/logo.png' %}" alt="logo">
+    <div id="wrapper" class="d-flex justify-content-center align-items-center vh-100">
+        <div class="container">
+          <div class="form-data p-4 shadow-lg rounded bg-white" style="max-width: 400px; margin: auto;">
+            
+            <form method="POST" action="{% url 'login' %}">
+              {% csrf_token %}
+              
+              <div class="text-center mb-3">
+                <img src="{% static 'assets2/images/logo.png' %}" alt="logo" class="img-fluid" style="max-width: 150px;">
+              </div>
+              
+              <!-- Username Field -->
+              <div class="mb-3">
+                <label class="form-label">Username or Email</label>
+                {{ form.username }}
+                <div class="text-danger small">{{ form.username.errors }}</div>
+              </div>
+    
+              <!-- Password Field -->
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                {{ form.password }}
+                <div class="text-danger small">{{ form.password.errors }}</div>
+              </div>
+    
+              <!-- Display non-field errors -->
+              {% if form.non_field_errors %}
+                <div class="alert alert-danger p-2">
+                  {{ form.non_field_errors }}
+                </div>
+              {% endif %}
+    
+              <!-- Submit Button -->
+              <button class="form-btn w-100 mt-3" type="submit">Log in</button>
+            </form>
+            
+            <!-- Sign Up Link -->
+            <div class="text-center mt-3">
+              <p>Don't have an account? <a href="{% url 'sign-up' %}" class="text-decoration-none">Sign up</a></p>
+            </div>
           </div>
-          
-          <!-- Display form fields -->
-          {{ form.username }}
-
-          <div class="error" style="color: red;">{{ form.username.errors }}</div>
-
-          {{ form.password }}
-
-          <div class="error" style="color: red;">{{ form.password.errors }}</div>
-          
-          <!-- Display any form errors -->
-          {% if form.non_field_errors %}
-            <div class="error">{{ form.non_field_errors }}</div>
-          {% endif %}
-
-          <!-- Submit Button -->
-          <button class="form-btn" type="submit">Log in</button>
-        </form>
-        
-        <div class="sign-up">
-          Don't have an account? <a href="{% url 'sign-up' %}">Sign up</a>
         </div>
       </div>
-    </div>
-  </div>
 
 </body>
 </html>

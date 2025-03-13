@@ -22,27 +22,71 @@ class EditProfileForm(forms.ModelForm):
 
 
 class UserRegisterForm(UserCreationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'prompt srch_explore'}), max_length=50, required=True)
-    # username = forms.EmailInput(widget=forms.TextInput(attrs={'placeholder': 'Username'}), max_length=50, required=True)
+    username = forms.CharField(
+        max_length=50,
+        required=True,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your username',
+        })
+    )
+    
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your email',
+        })
+    )
+    
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your password',
+        }),
+        required=True
+    )
 
-    email = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': 'Email', 'class': 'prompt srch_explore'}))
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Enter Password', 'class': 'prompt srch_explore'}))
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password', 'class': 'prompt srch_explore'}))
-    # email = forms.EmailField()
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Confirm your password',
+        }),
+        required=True
+    )
 
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("This email is already in use. Please use a different one.")
+        return email
+
 
 
 class UserLoginForm(AuthenticationForm):
     username = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'prompt srch_explore'}),
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your username or email',
+        }),
         required=True
     )
+    
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'prompt srch_explore'}),
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your password',
+        }),
         required=True
     )
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if not User.objects.filter(username=username).exists():
+            raise forms.ValidationError("No user found with this username.")
+        return username
 
