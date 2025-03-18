@@ -12,7 +12,20 @@
   <link rel="stylesheet" 
   href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
   <title>Instagram | Register</title>
+
+  <style>
+    #signup-form {
+  width:1000px;
+  max-width: 100rem;
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+  </style>
 </head>
+
+
 
 <body>
 
@@ -29,7 +42,7 @@
         </div>
 
         <div class="col-md-6">
-          <div class="form-data p-4 shadow-lg rounded bg-white">
+          <div class="p-4 shadow-lg rounded bg-white" id="signup-form">
             
             <form action="{% url 'sign-up' %}" method="POST">
               {% csrf_token %}
