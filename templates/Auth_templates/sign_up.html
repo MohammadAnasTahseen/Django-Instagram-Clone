@@ -76,7 +76,6 @@
               <!-- Submit Button -->
               <button class="form-btn w-100 mt-3" type="submit">Sign up</button>
 
-              <button class="" type="submit" id="check">Sign up</button>
             </form>
 
           </div>
@@ -92,31 +91,30 @@
 
 
 {% block script %}
-
 <script>
-
-
 document.addEventListener("DOMContentLoaded", function () {
-  
-window.addEventListener("beforeunload", function (event) {
-
-  myFunction();
-
-
-
-
-});
-
+    window.addEventListener("beforeunload", function (event) {
+        myFunction();
+    });
 });
 
 function myFunction() {
-  console.log("Page was refreshed!");
+    console.log("Page was refreshed!");
+    fetch("{% url 'handle-refresh' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
 }
-
-
-
 </script>
-
-
-
 {% endblock %}

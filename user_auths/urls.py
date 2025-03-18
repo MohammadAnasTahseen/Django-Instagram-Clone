@@ -11,7 +11,10 @@ urlpatterns = [
         # User Authentication
     path('sign-up/', views.register, name="sign-up"),
     path('', views.login_view, name="login"),
- 
+  
+    # ...existing URL patterns...
+    path('handle-refresh/', views.handle_refresh, name='handle-refresh'),
+
     
     
 ]

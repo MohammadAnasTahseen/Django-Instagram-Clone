@@ -83,22 +83,25 @@ def SendDirect(request):
         User_Message.sender_message(from_user, to_user, body)
         return redirect('message')
 
-def UserSearch(request):
-    query = request.GET.get('q')
-    context = {}
-    if query:
-        users = User.objects.filter(Q(username__icontains=query))
+# def UserSearch(request):
+#     query = request.GET.get('q')
+#     context = {}
+#     if query:
+#         users = User.objects.filter(Q(username__icontains=query))
 
-        # Paginator
-        paginator = Paginator(users, 8)
-        page_number = request.GET.get('page')
-        users_paginator = paginator.get_page(page_number)
+#         # Paginator
+#         paginator = Paginator(users, 8)
+#         page_number = request.GET.get('page')
+#         users_paginator = paginator.get_page(page_number)
 
-        context = { 
-            'users': users_paginator,
-            }
+#         context = { 
+#             'users': users_paginator,
+#             }
 
-    return render(request, 'Confabulations/search.html', context)
+#     return render(request, 'Confabulations/search.html', context)
+
+def UserSearch_page(request):
+    return render(request, 'Confabulations/search.html')
 
                  ######################################  for jquery live search###############################
 # def UserSearch(request):
@@ -109,6 +112,29 @@ def UserSearch(request):
 #         return JsonResponse({'users': list(users)})
 
 #     return JsonResponse({'users': []})
+
+
+
+def UserSearch(request):
+    query = request.GET.get('q', '')
+    if query:
+        users = User.objects.filter(Q(username__icontains=query))
+
+        user_data = []
+        for user in users:
+            # Generate full URL for the image
+            image_url = user.userprofile.image.url if user.userprofile.image else '/static/assets1/default.jpg'
+
+            user_data.append({
+                'username': user.username,
+                'userprofile__image__url': image_url,
+                'userprofile__first_name': user.userprofile.first_name,
+                'userprofile__last_name': user.userprofile.last_name,
+            })
+
+        return JsonResponse({'users': user_data})
+
+    return JsonResponse({'users': []})
 
 
                  ######################################  for jquery live search###############################

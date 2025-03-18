@@ -169,3 +169,16 @@ def login_view(request):
         form = UserLoginForm()
     
     return render(request, 'Auth_Templates/login.html', {'form': form})
+
+
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def handle_refresh(request):
+    if request.method == 'POST':
+        # Your server-side logic here
+        print("Page was refreshed!")
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'failed'}, status=400)

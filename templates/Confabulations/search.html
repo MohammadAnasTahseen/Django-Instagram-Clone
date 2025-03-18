@@ -17,7 +17,7 @@
 
 <body>
 
-<div id="wrapper">
+<!-- <div id="wrapper">
     <div class="container">
       <div class="phone-app-ddemo"></div>
       <div class="form-data">
@@ -59,7 +59,7 @@
 
                 </div>
             </div>
-            <!-- <hr> -->
+   
         {% endfor %}
         
           
@@ -70,11 +70,11 @@
 
 
 
-  </div>
+  </div> -->
 
 
-  {% comment %} <input type="text" id="search-box" placeholder="Search" name="q">
-<div id="search-results"></div> {% endcomment %}
+<input type="text" id="search-box" placeholder="Search" name="q">
+<div id="search-results"></div> 
  
 
 </body>
@@ -86,7 +86,7 @@
 
 
 
-{% comment %} {% block script %}
+{% block script %}
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -95,7 +95,7 @@ $(document).ready(function() {
         let query = $(this).val();
         if (query.length > 0) {
             $.ajax({
-                url: "{% url 'UserSearch_live' %}",  // Ensure this matches your Django URL name
+                url: "{% url 'search_users_func' %}",  // Ensure this matches your Django URL name
                 data: {'q': query},
                 dataType: 'json',
                 success: function(response) {
@@ -106,15 +106,15 @@ $(document).ready(function() {
                         results.forEach(user => {
                             resultsHtml += `
                                 <div class="side-menu__user-profile" style="padding: 10px; border: 1px solid rgba(192, 192, 192, 0.514); border-radius: 25px;">
-                                    <a href="/profile/${user.username}" class="side-menu__user-avatar">
-                                        <img src="${user.userprofile__image || '/static/assets1/default.jpg'}" alt="User Picture">
+                                    <a href="/${user.username}" class="side-menu__user-avatar">
+                                        <img src="${user.userprofile__image__url || '/static/assets1/default.jpg'}" alt="User Picture">
                                     </a>
                                     <div class="side-menu__user-idnfo">
-                                        <a href="/profile/${user.username}" style="font-size: 15px; color: black;">${user.userprofile__first_name || "Instagram User"} ${user.userprofile__last_name || ""}</a>
+                                        <a href="/${user.username}" style="font-size: 15px; color: black;">${user.userprofile__first_name || "Instagram User"} ${user.userprofile__last_name || ""}</a>
                                         <br>
                                         <span style="font-size: 14px;">@${user.username}</span>
                                         <br>
-                                        <a href="/profile/${user.username}" style="color: blue;">View Profile</a>
+                                        <a href="/${user.username}" style="color: blue;">View Profile</a>
                                     </div>
                                 </div>`;
                         });
@@ -133,4 +133,4 @@ $(document).ready(function() {
 </script>
 
 
-{% endblock %} {% endcomment %}
+{% endblock %}
